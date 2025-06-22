@@ -1,6 +1,7 @@
 package com.guice_practice.server.servlets;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.guice_practice.server.annotations.JsonContent;
 import com.guice_practice.server.models.Notification;
 import com.guice_practice.server.services.NotificationService;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@Singleton
 public class NotificationServlet extends HttpServlet
 {
   private final NotificationService notificationService;

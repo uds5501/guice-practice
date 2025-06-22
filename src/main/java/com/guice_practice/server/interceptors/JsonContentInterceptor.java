@@ -1,6 +1,7 @@
 package com.guice_practice.server.interceptors;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -12,23 +13,25 @@ public class JsonContentInterceptor implements MethodInterceptor
 {
 
   @Inject
-  private HttpServletRequest request;
+  private Provider<HttpServletRequest> requestProvider;
 
   @Inject
-  private HttpServletResponse response;
+  private Provider<HttpServletResponse> responseProvider;
 
   @Override
   public Object invoke(MethodInvocation invocation) throws Throwable
   {
-    if (request != null && response != null) {
-      String method = request.getMethod();
+    if (requestProvider.get() != null && responseProvider.get() != null) {
+      String method = requestProvider.get().getMethod();
       if ("POST".equals(method) || "PUT".equals(method)) {
-        String contentType = request.getContentType();
+        String contentType = requestProvider.get().getContentType();
         if (contentType == null || !contentType.contains("application/json")) {
-          response.setStatus(400);
-          response.setContentType("application/json");
+          responseProvider.get().setStatus(400);
+          responseProvider.get().setContentType("application/json");
           try {
-            response.getWriter().write("{\"error\":\"Invalid content type. Expected application/json.\"}");
+            responseProvider.get()
+                            .getWriter()
+                            .write("{\"error\":\"Invalid content type. Expected application/json.\"}");
           }
           catch (IOException e) {
             // Handle the exception if writing to the response fails
@@ -37,19 +40,19 @@ public class JsonContentInterceptor implements MethodInterceptor
           return null;
         }
       }
-      response.setContentType("application/json");
-      response.setHeader("X-API-Version", "1.0");
-      response.setHeader("X-Content-Handler", "JsonContent");
+      responseProvider.get().setContentType("application/json");
+      responseProvider.get().setHeader("X-API-Version", "1.0");
+      responseProvider.get().setHeader("X-Content-Handler", "JsonContent");
     }
     try {
       return invocation.proceed();
     }
     catch (Exception e) {
-      if (response != null) {
-        response.setStatus(400);
-        response.setContentType("application/json");
+      if (responseProvider.get() != null) {
+        responseProvider.get().setStatus(400);
+        responseProvider.get().setContentType("application/json");
         try {
-          response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+          responseProvider.get().getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
         }
         catch (IOException ioException) {
           // Handle the exception if writing to the response fails

@@ -1,8 +1,8 @@
 package com.guice_practice.server.services;
 
+import com.google.inject.Singleton;
 import com.guice_practice.server.models.Product;
 
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

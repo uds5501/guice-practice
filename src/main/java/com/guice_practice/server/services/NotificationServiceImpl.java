@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-class NotificationServiceImpl implements NotificationService
+public class NotificationServiceImpl implements NotificationService
 {
   private final List<Notification> notifications = new ArrayList<>(List.of(
       new Notification("1", "1", "Welcome to the platform!", "welcome"),

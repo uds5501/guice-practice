@@ -1,5 +1,6 @@
 package com.guice_practice.server.filters;
 
+import com.google.inject.Singleton;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,7 +8,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.logging.Logger;
 

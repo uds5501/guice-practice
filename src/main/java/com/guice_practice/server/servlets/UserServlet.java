@@ -1,6 +1,7 @@
 package com.guice_practice.server.servlets;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.guice_practice.server.models.User;
 import com.guice_practice.server.services.UserService;
 import com.guice_practice.server.utils.JsonUtil;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+@Singleton
 public class UserServlet extends HttpServlet
 {
   private final UserService userService;
