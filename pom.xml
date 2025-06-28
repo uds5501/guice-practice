@@ -24,7 +24,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>test</scope>
+      <internalScope>test</internalScope>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
