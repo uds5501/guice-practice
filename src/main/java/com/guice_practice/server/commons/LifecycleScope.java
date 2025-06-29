@@ -19,6 +19,7 @@ public class LifecycleScope implements Scope
   public void setLifecycle(Lifecycle lifecycle)
   {
     synchronized (instances) {
+      this.lifecycle = lifecycle;
       for (Object instance : instances) {
         lifecycle.addManagedGlobalInstance(instance, internalScope);
       }

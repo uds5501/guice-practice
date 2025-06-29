@@ -1,5 +1,7 @@
 package com.guice_practice.server.services.stateful;
 
+import com.google.inject.Provides;
+
 public class PostgresConfig
 {
   private final String host;
@@ -8,7 +10,8 @@ public class PostgresConfig
   private final String username;
   private final String password;
 
-  public PostgresConfig(String host, int port, String databaseName, String username, String password) {
+  public PostgresConfig(String host, int port, String databaseName, String username, String password)
+  {
     this.host = host;
     this.port = port;
     this.databaseName = databaseName;
@@ -16,23 +19,28 @@ public class PostgresConfig
     this.password = password;
   }
 
-  public String getHost() {
+  public String getHost()
+  {
     return host;
   }
 
-  public int getPort() {
+  public int getPort()
+  {
     return port;
   }
 
-  public String getDatabaseName() {
+  public String getDatabaseName()
+  {
     return databaseName;
   }
 
-  public String getUsername() {
+  public String getUsername()
+  {
     return username;
   }
 
-  public String getPassword() {
+  public String getPassword()
+  {
     return password;
   }
 }

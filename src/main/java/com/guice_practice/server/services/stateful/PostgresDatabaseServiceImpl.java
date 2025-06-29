@@ -3,27 +3,30 @@ package com.guice_practice.server.services.stateful;
 import com.google.inject.Inject;
 import com.guice_practice.server.commons.ALifeEnds;
 import com.guice_practice.server.commons.LifecycleBegins;
+import com.guice_practice.server.commons.ManagedGlobalLifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
+@ManagedGlobalLifecycle
 public class PostgresDatabaseServiceImpl implements DatabaseService
 {
-  private static Logger logger = LoggerFactory.getLogger(PostgresDatabaseServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(PostgresDatabaseServiceImpl.class);
 
-  @Inject
-  private PostgresConfig config;
+  private final PostgresConfig config;
   private Connection connection;
 
+  @Inject
   public PostgresDatabaseServiceImpl(PostgresConfig config)
   {
     this.config = config;
   }
 
   @LifecycleBegins
-  private void connect() throws Exception
+  public void connect() throws Exception
   {
     String host = config.getHost();
     String user = config.getUsername();
@@ -35,7 +38,7 @@ public class PostgresDatabaseServiceImpl implements DatabaseService
   }
 
   @ALifeEnds
-  private void disconnect() throws Exception
+  public void disconnect() throws Exception
   {
     if (connection != null && !connection.isClosed()) {
       connection.close();
@@ -48,6 +51,11 @@ public class PostgresDatabaseServiceImpl implements DatabaseService
   @Override
   public boolean isConnected()
   {
-    return false;
+    try {
+      return this.connection != null && !this.connection.isClosed();
+    }
+    catch (SQLException e) {
+      return false;
+    }
   }
 }

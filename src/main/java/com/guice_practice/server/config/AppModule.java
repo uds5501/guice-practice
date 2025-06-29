@@ -12,6 +12,8 @@ import com.guice_practice.server.services.ProductService;
 import com.guice_practice.server.services.ProductServiceImpl;
 import com.guice_practice.server.services.UserService;
 import com.guice_practice.server.services.UserServiceImpl;
+import com.guice_practice.server.services.stateful.DatabaseService;
+import com.guice_practice.server.services.stateful.PostgresDatabaseServiceImpl;
 import com.guice_practice.server.servlets.HealthCheckServlet;
 import com.guice_practice.server.servlets.NotificationServlet;
 import com.guice_practice.server.servlets.UserServlet;
@@ -37,6 +39,7 @@ public class AppModule extends AbstractModule
     bind(UserService.class).to(UserServiceImpl.class);
     bind(ProductService.class).to(ProductServiceImpl.class);
     bind(NotificationService.class).to(NotificationServiceImpl.class);
+    bind(DatabaseService.class).to(PostgresDatabaseServiceImpl.class).asEagerSingleton();
 
     JsonContentInterceptor interceptor = new JsonContentInterceptor();
     requestInjection(interceptor);

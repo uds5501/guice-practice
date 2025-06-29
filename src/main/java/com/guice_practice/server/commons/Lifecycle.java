@@ -159,6 +159,11 @@ public class Lifecycle
     }
   }
 
+  public void join() throws InterruptedException
+  {
+    Thread.currentThread().join();
+  }
+
   // 2 orders possible.
   // try acquiring the lifecycle lock, if it fails, you shouldn't add
   // try checking for lifecycle state, if it's new and you try add, it's possible that the lifecycle might shut down later [RACE]
@@ -187,7 +192,7 @@ public class Lifecycle
     }
   }
 
-  public interface Handler extends Comparable<Integer>
+  public interface Handler extends Comparable<Handler>
   {
     void start() throws Exception;
 
@@ -200,9 +205,9 @@ public class Lifecycle
     }
 
     @Override
-    default public int compareTo(Integer o)
+    default public int compareTo(Handler o)
     {
-      return Integer.compare(getPriority(), o);
+      return Integer.compare(getPriority(), o.getPriority());
     }
   }
 
@@ -221,7 +226,7 @@ public class Lifecycle
       Method invokationMethod = null;
       for (Method method : o.getClass().getMethods()) {
         for (Annotation annotation : method.getAnnotations()) {
-          if (LifecycleBegins.class.getName().equals(annotation.getClass().getName())) {
+          if (LifecycleBegins.class.equals(annotation.annotationType())) {
             annotatedMethods++;
             invokationMethod = method;
           }
@@ -249,7 +254,7 @@ public class Lifecycle
       Method invokationMethod = null;
       for (Method method : o.getClass().getMethods()) {
         for (Annotation annotation : method.getAnnotations()) {
-          if (ALifeEnds.class.getName().equals(annotation.getClass().getName())) {
+          if (ALifeEnds.class.equals(annotation.annotationType())) {
             annotatedMethods++;
             invokationMethod = method;
           }

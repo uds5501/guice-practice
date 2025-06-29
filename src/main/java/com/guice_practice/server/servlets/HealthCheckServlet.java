@@ -13,8 +13,14 @@ import java.io.IOException;
 @Singleton
 public class HealthCheckServlet extends HttpServlet
 {
+  private final DatabaseService databaseService;
+
   @Inject
-  private DatabaseService databaseService;
+  public HealthCheckServlet(DatabaseService databaseService)
+  {
+    this.databaseService = databaseService;
+  }
+
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
